@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './auth.css';
 
 const Login: React.FC = () => {
@@ -55,6 +55,11 @@ const Login: React.FC = () => {
 
                 <button type="submit" className="submit-btn">Đăng nhập</button>
             </form>
+            <div className="auth-footer">
+                <p>Chưa có tài khoản?
+                    <Link to="/register" className="auth-link">Đăng ký ngay</Link>
+                </p>
+            </div>
 
 
         </>

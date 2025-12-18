@@ -1,3 +1,4 @@
+/* src/components/auth/auth.css */
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 
 :root {
@@ -90,7 +91,6 @@ body {
     opacity: 0.9;
     line-height: 1.6;
 }
-
 
 .auth-card {
     width: 100%;
@@ -202,10 +202,12 @@ body {
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
 }
+
 /* Căn lề trái cho form group và label */
 .auth-form {
     width: 100%;
-    max-width: 400px; /* Giới hạn độ rộng form để cân đối */
+    max-width: 400px;
+    /* Giới hạn độ rộng form để cân đối */
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
@@ -214,7 +216,8 @@ body {
 .form-group {
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* Ép các thành phần bên trong căn trái */
+    align-items: flex-start;
+    /* Ép các thành phần bên trong căn trái */
     width: 100%;
 }
 
@@ -224,7 +227,8 @@ body {
     font-weight: 500;
     color: var(--text-main);
     margin-bottom: 0.5rem;
-    text-align: left; /* Đảm bảo chữ căn trái */
+    text-align: left;
+    /* Đảm bảo chữ căn trái */
 }
 
 .form-input {
@@ -236,7 +240,8 @@ body {
     font-family: inherit;
     font-size: 1rem;
     transition: all 0.2s;
-    box-sizing: border-box; /* Quan trọng để input không bị tràn */
+    box-sizing: border-box;
+    /* Quan trọng để input không bị tràn */
 }
 
 .form-input:focus {
@@ -254,3 +259,39 @@ body {
     font-size: 0.9rem;
     margin-bottom: 0.5rem;
 }
+
+.no-break {
+    white-space: nowrap;
+}
+
+.auth-right-content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    max-width: 480px;
+    /* Tăng nhẹ từ 400px lên 480px để chữ nằm thoải mái hơn */
+}
+
+.auth-right-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+    /* Đảm bảo khoảng cách dòng hợp lý */
+}
+
+/* Đảm bảo trên màn hình nhỏ hơn (tablet), chữ vẫn không bị quá to */
+@media (max-width: 1024px) {
+    .auth-right-title {
+        font-size: 2rem;
+    }
+
+    .auth-right {
+        padding: 2rem;
+    }
+}
+
+/* Ngat ket noi */
+
+
+
