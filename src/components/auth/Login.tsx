@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './auth.css';
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    const navigate = useNavigate();
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-
+        // Handle login logic here
         console.log('Login:', { email, password });
+        navigate('/chat');
     };
 
     return (
@@ -18,6 +21,7 @@ const Login: React.FC = () => {
                 <h2 className="auth-title">AppChat</h2>
                 <p className="auth-subtitle">Vui lòng nhập thông tin để đăng nhập</p>
             </div>
+
             <form className="auth-form" onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label className="form-label" htmlFor="email">Email</label>
@@ -47,7 +51,7 @@ const Login: React.FC = () => {
 
                 <div className="form-options">
                     <label className="remember-me">
-                        <input type="checkbox"/>
+                        <input type="checkbox" />
                         <span>Ghi nhớ đăng nhập</span>
                     </label>
                     <a href="#" className="forgot-password">Quên mật khẩu?</a>
@@ -55,13 +59,12 @@ const Login: React.FC = () => {
 
                 <button type="submit" className="submit-btn">Đăng nhập</button>
             </form>
+
             <div className="auth-footer">
                 <p>Chưa có tài khoản?
                     <Link to="/register" className="auth-link">Đăng ký ngay</Link>
                 </p>
             </div>
-
-
         </>
     );
 };
