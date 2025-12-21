@@ -55,5 +55,49 @@
     overflow-y: auto;
 }
 
+.sidebar-sub-header {
+    padding: 0 16px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    color: #65676b;
+}
 
+.sort-by {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.sort-option {
+    font-weight: 600;
+    color: #0084ff;
+    margin-left: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.sort-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    min-width: 120px;
+    margin-top: 5px;
+    overflow: hidden;
+}
+
+.sort-menu-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #050505;
+}
 
