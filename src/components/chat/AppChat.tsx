@@ -92,6 +92,68 @@ const AppChat: React.FC = () => {
     const activeUserData = users.find(u => u.id === activeUser) || users[0];
 
 
+
+return (
+    <div className={`chat-container ${darkMode ? 'dark-mode' : ''}`}>
+        {/* Sidebar */}
+        <div className="chat-sidebar">
+            <div className="sidebar-header">
+                <h1 className="sidebar-title">AppChat</h1>
+                <div className="sidebar-actions">
+                    {/* <button><i className="fa-solid fa-gear"></i></button>
+                        <button><i className="fa-solid fa-pen-to-square"></i></button> */}
+                </div>
+            </div>
+
+            <div className="search-container">
+                <input type="text" placeholder="Tìm kiếm" className="search-input" />
+            </div>
+
+            <div className="sidebar-sub-header">
+                <div className="sort-by">
+                    Sắp xếp
+                    <span className="sort-option" onClick={() => setShowSortMenu(!showSortMenu)}>
+                            {sortOption} <i className="fa-solid fa-chevron-down"></i>
+                        </span>
+                    {showSortMenu && (
+                        <div className="sort-menu">
+                            <div className="sort-menu-item" onClick={() => handleSortOptionClick('Mới nhất')}>Mới nhất</div>
+                            <div className="sort-menu-item" onClick={() => handleSortOptionClick('Cũ nhất')}>Cũ nhất</div>
+                            <div className="sort-menu-item" onClick={() => handleSortOptionClick('Gần đây')}>Gần đây</div>
+                            <div className="sort-menu-item" onClick={() => handleSortOptionClick('Nhóm')}>Nhóm</div>
+                        </div>
+                    )}
+                </div>
+                <div className="sidebar-sub-actions">
+                    <button title="Add friend" onClick={toggleAddFriendModal}><i className="fa-solid fa-user-plus"></i></button>
+                    <button title="Create group" onClick={toggleCreateGroupModal}><i className="fa-solid fa-users"></i></button>
+                </div>
+            </div>
+            <div className="user-list">
+                {users.map(user => (
+                    <div
+                        key={user.id}
+                        className={`user-item ${activeUser === user.id ? 'active' : ''}`}
+                        onClick={() => setActiveUser(user.id)}
+                    >
+                        <div className="avatar">
+                            <img src={user.avatar} alt={user.name} />
+                            {user.status === 'online' && <div className="status-dot status-online"></div>}
+                        </div>
+                        <div className="user-info">
+                            <div className="user-name">{user.name}</div>
+                            <div className={`last-message ${user.unread ? 'unread' : ''}`}>
+                                {user.lastMessage}
+                            </div>
+                        </div>
+                        <div className="message-time">{user.time}</div>
+                    </div>
+                ))}
+            </div>
+        </div>
+
+    </div>
+);
 };
 
 export default AppChat;
