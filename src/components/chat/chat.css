@@ -100,4 +100,41 @@
     font-size: 14px;
     color: #050505;
 }
+.sort-menu-item:hover {
+    background-color: #f0f2f5;
+}
 
+.sidebar-sub-actions {
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-sub-actions button {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 10px;
+    color: #65676b;
+    padding: 6px;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar-sub-actions button:hover {
+    background-color: #f0f2f5;
+}
+
+.sidebar-footer {
+    padding: 16px;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff;
+}
