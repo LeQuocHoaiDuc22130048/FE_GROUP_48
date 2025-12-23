@@ -150,7 +150,70 @@ return (
                     </div>
                 ))}
             </div>
+
+            <div className="sidebar-footer">
+                <div className="footer-user-info">
+                    <div className="avatar footer-avatar">
+                        <img src="https://i.pravatar.cc/150?img=60" alt="My Profile" />
+                        <div className="status-dot status-online"></div>
+                    </div>
+                    <div className="footer-details">
+                        <div className="footer-name">Me</div>
+                        <div className="footer-status">Online</div>
+                    </div>
+                </div>
+                <div className="footer-actions">
+                    <button title="Dark Mode" onClick={toggleDarkMode}>
+                        <i className={`fa-solid ${darkMode ? 'fa-sun' : 'fa-moon'}`}></i>
+                    </button>
+                    <button title="Logout" onClick={handleLogout}><i className="fa-solid fa-right-from-bracket"></i></button>
+                </div>
+            </div>
         </div>
+
+        {/* Chat Area */}
+        <div className="chat-area">
+            <div className="chat-header">
+                <div className="chat-header-user">
+                    <div className="avatar" style={{ width: 40, height: 40 }}>
+                        <img src={activeUserData.avatar} alt={activeUserData.name} />
+                        {activeUserData.status === 'online' && <div className="status-dot status-online" style={{ width: 10, height: 10, right: 0, bottom: 0 }}></div>}
+                    </div>
+                    <div className="chat-header-info">
+                        <div className="chat-header-name">{activeUserData.name}</div>
+                        <div className="chat-header-status">{activeUserData.status === 'online' ? 'Online' : 'Offline'}</div>
+                    </div>
+                </div>
+                <div className="chat-actions">
+                    <button onClick={toggleRightSidebar}><i className="fa-solid fa-circle-info"></i></button>
+                </div>
+            </div>
+
+            <div className="messages-list">
+                {messages.map(msg => (
+                    <div key={msg.id} className={`message ${msg.sender === 'me' ? 'sent' : 'received'}`}>
+                        {msg.image && <img src={msg.image} alt="attachment" className="message-image" />}
+                        <div className="message-text">{msg.text}</div>
+                    </div>
+                ))}
+            </div>
+
+            <form className="chat-input-area" onSubmit={handleSendMessage}>
+                <div className="input-actions">
+                    <button type="button"><i className="fa-solid fa-paperclip"></i></button>
+                    <button type="button"><i className="fa-solid fa-image"></i></button>
+                </div>
+                <input
+                    type="text"
+                    placeholder="Type your message here.."
+                    className="message-input"
+                    value={messageInput}
+                    onChange={(e) => setMessageInput(e.target.value)}
+                />
+                <button type="submit" className="send-btn">Send message</button>
+            </form>
+        </div>
+
 
     </div>
 );
