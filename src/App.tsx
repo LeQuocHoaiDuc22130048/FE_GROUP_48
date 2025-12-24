@@ -1,20 +1,17 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import AuthLayout from './components/auth/AuthLayout';
-import Login from './components/auth/Login';
-import Register from './components/auth/Register';
+import Register from './pages/RegisterPage.tsx';
 import './App.css';
-import AppChat from "./components/chat/AppChat.tsx";
+import AppChat from './pages/ChatPage.tsx';
+import LoginPage from './pages/LoginPage.tsx';
 
 function App() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Navigate to="/login" replace />} />
-                <Route element={<AuthLayout />}>
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                </Route>
-                <Route path="/chat" element={<AppChat />} />
+                <Route path='/' element={<Navigate to='/login' replace />} />
+                <Route path='/login' element={<LoginPage />} />
+                <Route path='/register' element={<Register />} />
+                <Route path='/chat' element={<AppChat />} />
             </Routes>
         </BrowserRouter>
     );
