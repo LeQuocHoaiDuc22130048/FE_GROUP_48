@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Register from './pages/RegisterPage.tsx';
-import './App.css';
 import AppChat from './pages/ChatPage.tsx';
 import LoginPage from './pages/LoginPage.tsx';
 

@@ -26,14 +26,13 @@ import {
     SelectTrigger,
     SelectValue
 } from '@/components/ui/select';
-import { SearchIcon, UserPlus, Users } from 'lucide-react';
+import { SearchIcon, UserPlus } from 'lucide-react';
 import ListConversation from '../chat/ListConversation';
 import { NavUser } from './nav-user';
 import {
     Dialog,
     DialogClose,
     DialogContent,
-    DialogDescription,
     DialogFooter,
     DialogHeader,
     DialogTitle,

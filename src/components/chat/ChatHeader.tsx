@@ -1,9 +1,59 @@
-import React from 'react'
+import { useChatStore } from '@/types/store';
+import { MoreVertical, Users } from 'lucide-react';
 
 const ChatHeader = () => {
-  return (
-    <div>ChatHeader</div>
-  )
-}
+    const { activeConversation, toggleInfo } = useChatStore();
+    if (!activeConversation) return null;
 
-export default ChatHeader
+    const isGroup = activeConversation.type === 'group';
+    return (
+        <div className='flex items-center justify-between px-4 h-14 border-b'>
+            {/* Left */}
+            <div
+                className='flex items-center gap-3 cursor-pointer'
+                onClick={toggleInfo}
+            >
+                {isGroup ? (
+                    <div className='h-9 w-9 rounded-full bg-muted flex items-center justify-center'>
+                        <Users className='h-4 w-4 text-muted-foreground' />
+                    </div>
+                ) : (
+                    <img
+                        src={activeConversation.avatar}
+                        className='h-9 w-9 rounded-full'
+                    />
+                )}
+
+                <div>
+                    <p className='font-medium leading-none'>
+                        {activeConversation.name}
+                    </p>
+
+                    {!isGroup && (
+                        <p className='text-xs text-green-500'>
+                            {activeConversation.isOnline ? 'Online' : 'Offline'}
+                        </p>
+                    )}
+
+                    {isGroup && (
+                        <p className='text-xs text-muted-foreground'>
+                            Nhóm chat
+                        </p>
+                    )}
+                </div>
+            </div>
+
+            {/* Right actions */}
+            <div className='flex items-center gap-1'>
+                <button
+                    className='h-9 w-9 flex items-center justify-center rounded-md hover:bg-muted'
+                    onClick={toggleInfo}
+                >
+                    <MoreVertical className='h-4 w-4' />
+                </button>
+            </div>
+        </div>
+    );
+};
+
+export default ChatHeader;

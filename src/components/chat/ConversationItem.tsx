@@ -4,10 +4,12 @@ import ConversationAvatar from './ConversationAvatar';
 
 const ConversationItem = ({
     data,
-    active
+    active,
+    onClick
 }: {
     data: Conversation;
     active?: boolean;
+    onClick?: () => void;
 }) => {
     return (
         <div
@@ -16,6 +18,7 @@ const ConversationItem = ({
                 'hover:bg-muted',
                 active && 'bg-muted'
             )}
+            onClick={onClick}
         >
             <ConversationAvatar data={data} />
 
