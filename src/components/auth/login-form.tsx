@@ -10,11 +10,16 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@radix-ui/react-label';
 import { Checkbox } from '../ui/checkbox';
+import { useNavigate } from 'react-router';
 
 export function LoginForm({
     className,
     ...props
 }: React.ComponentProps<'div'>) {
+    const navigate = useNavigate();
+    const onSubmit = (e: React.FormEvent) => {
+        navigate('/chat');
+    };
     return (
         <div className={cn('flex flex-col gap-6', className)} {...props}>
             <Card className='overflow-hidden p-0 border-border'>
@@ -65,7 +70,9 @@ export function LoginForm({
                                 </div>
                             </Field>
                             <Field>
-                                <Button type='submit'>Đăng nhập</Button>
+                                <Button type='submit' onClick={onSubmit}>
+                                    Đăng nhập
+                                </Button>
                             </Field>
 
                             <FieldDescription className='text-center'>

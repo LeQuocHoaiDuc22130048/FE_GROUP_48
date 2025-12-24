@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { Conversation } from './type';
+import type { Conversation, User } from './type';
 
 type Message = {
     id: string;
@@ -10,29 +10,47 @@ type Message = {
 };
 
 type ChatState = {
-    // Conversation
+    /* ================= AUTH / USER ================= */
+    currentUser: User | null;
+
+    /* ================= CONVERSATION ================= */
     activeConversation: Conversation | null;
     setActiveConversation: (c: Conversation) => void;
 
-    // Messages
+    /* ================= MESSAGES ================= */
     messages: Record<string, Message[]>;
     sendMessage: (conversationId: string, text: string) => void;
 
-    // UI - Sidebar info
+    /* ================= UI ================= */
     isInfoOpen: boolean;
+    isUserInfoOpen: boolean;
+
     openInfo: () => void;
     closeInfo: () => void;
     toggleInfo: () => void;
+
+    openUserInfo: () => void;
+    closeUserInfo: () => void;
 };
 
 export const useChatStore = create<ChatState>((set) => ({
+    /* ================= USER ================= */
+    currentUser: {
+        id: 'u1',
+        username: 'Nguyễn Văn A',
+        email: 'nguyenvana@gmail.com',
+        avatar: 'https://i.pravatar.cc/150',
+        status: 'online',
+        createdAt: '2024-01-10T08:30:00Z'
+    },
+
     /* ================= CONVERSATION ================= */
     activeConversation: null,
 
     setActiveConversation: (c) =>
         set({
             activeConversation: c,
-            isInfoOpen: false // đổi chat thì đóng sidebar
+            isInfoOpen: false
         }),
 
     /* ================= MESSAGES ================= */
@@ -84,10 +102,14 @@ export const useChatStore = create<ChatState>((set) => ({
             }
         })),
 
-    /* ================= UI SIDEBAR ================= */
+    /* ================= UI ================= */
     isInfoOpen: false,
+    isUserInfoOpen: false,
 
     openInfo: () => set({ isInfoOpen: true }),
     closeInfo: () => set({ isInfoOpen: false }),
-    toggleInfo: () => set((state) => ({ isInfoOpen: !state.isInfoOpen }))
+    toggleInfo: () => set((state) => ({ isInfoOpen: !state.isInfoOpen })),
+
+    openUserInfo: () => set({ isUserInfoOpen: true }),
+    closeUserInfo: () => set({ isUserInfoOpen: false })
 }));

@@ -1,5 +1,15 @@
 export type ConversationType = 'private' | 'group';
 
+export type User = {
+    id: string;
+    username: string;
+    email: string;
+    avatar: string;
+    phone?: string;
+    bio?: string;
+    status: 'online' | 'offline' | 'busy';
+    createdAt: string;
+};
 export type Conversation = {
     id: string;
     type: ConversationType;
@@ -12,6 +22,17 @@ export type Conversation = {
     isTyping?: boolean;
     isOnline?: boolean;
     isMe?: boolean;
+};
+
+export const currentUser: User = {
+    id: 'u_001',
+    username: 'Nguyễn Văn A',
+    email: 'nguyenvana@gmail.com',
+    avatar: 'https://i.pravatar.cc/150?img=3',
+    phone: '0909 123 456',
+    bio: 'Frontend Developer | React & Tailwind',
+    status: 'online',
+    createdAt: '2024-01-10T08:30:00Z'
 };
 export const conversations: Conversation[] = [
     {

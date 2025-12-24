@@ -1,4 +1,4 @@
-import { ChevronsUpDown, Settings, User } from 'lucide-react';
+import { ChevronsUpDown, Settings, User2 } from 'lucide-react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -17,18 +17,18 @@ import {
     useSidebar
 } from '@/components/ui/sidebar';
 import Logout from '../auth/logout';
+import { useChatStore } from '@/types/store';
+import type { User } from '@/types/type';
+import { useNavigate } from 'react-router';
 
-export function NavUser({
-    user
-}: {
-    user: {
-        name: string;
-        email: string;
-        avatar: string;
-    };
-}) {
+export function NavUser({ user }: { user: User }) {
     const { isMobile } = useSidebar();
+    const navigate = useNavigate();
+    const { openUserInfo } = useChatStore();
 
+    const handleLogout = () => {
+        navigate('/login');
+    };
     return (
         <SidebarMenu>
             <SidebarMenuItem>
@@ -41,7 +41,7 @@ export function NavUser({
                             <Avatar className='h-8 w-8 rounded-lg'>
                                 <AvatarImage
                                     src={user.avatar}
-                                    alt={user.name}
+                                    alt={user.username}
                                 />
                                 <AvatarFallback className='rounded-lg'>
                                     CN
@@ -49,7 +49,7 @@ export function NavUser({
                             </Avatar>
                             <div className='grid flex-1 text-left text-sm leading-tight'>
                                 <span className='truncate font-medium'>
-                                    {user.name}
+                                    {user.username}
                                 </span>
                                 <span className='truncate text-xs'>
                                     {user.email}
@@ -69,7 +69,7 @@ export function NavUser({
                                 <Avatar className='h-8 w-8 rounded-lg'>
                                     <AvatarImage
                                         src={user.avatar}
-                                        alt={user.name}
+                                        alt={user.username}
                                     />
                                     <AvatarFallback className='rounded-lg'>
                                         CN
@@ -77,7 +77,7 @@ export function NavUser({
                                 </Avatar>
                                 <div className='grid flex-1 text-left text-sm leading-tight'>
                                     <span className='truncate font-medium'>
-                                        {user.name}
+                                        {user.username}
                                     </span>
                                     <span className='truncate text-xs'>
                                         {user.email}
@@ -87,8 +87,8 @@ export function NavUser({
                         </DropdownMenuLabel>
 
                         <DropdownMenuGroup>
-                            <DropdownMenuItem>
-                                <User />
+                            <DropdownMenuItem onClick={openUserInfo}>
+                                <User2 />
                                 Thông tin tài khoản
                             </DropdownMenuItem>
                             <DropdownMenuItem>
@@ -97,7 +97,7 @@ export function NavUser({
                             </DropdownMenuItem>
                         </DropdownMenuGroup>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onClick={handleLogout}>
                             <Logout />
                             Log out
                         </DropdownMenuItem>

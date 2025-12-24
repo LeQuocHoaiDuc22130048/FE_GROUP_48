@@ -42,15 +42,12 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import DialogGroupChat from '../chat/DialogGroupChat';
+import { currentUser } from '@/types/type';
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-    const data = {
-        user: {
-            name: 'Nguyễn Văn A',
-            email: '',
-            avatar: 'https://picsum.photos/id/1005/200/300'
-        }
-    };
+    
+
+    
 
     return (
         <Sidebar variant='inset' {...props} className='border-r'>
@@ -149,7 +146,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <ListConversation />
             </SidebarContent>
             <SidebarFooter>
-                <NavUser user={data.user} />
+                <NavUser user={currentUser} />
             </SidebarFooter>
         </Sidebar>
     );
