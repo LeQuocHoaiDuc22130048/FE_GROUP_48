@@ -45,10 +45,6 @@ import DialogGroupChat from '../chat/DialogGroupChat';
 import { currentUser } from '@/types/type';
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-    
-
-    
-
     return (
         <Sidebar variant='inset' {...props} className='border-r'>
             <SidebarHeader>

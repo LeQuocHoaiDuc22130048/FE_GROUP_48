@@ -1,5 +1,6 @@
 import { useChatStore } from '@/types/store';
 import { MoreVertical, Users } from 'lucide-react';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 
 const ChatHeader = () => {
     const { activeConversation, toggleInfo } = useChatStore();
@@ -45,12 +46,17 @@ const ChatHeader = () => {
 
             {/* Right actions */}
             <div className='flex items-center gap-1'>
-                <button
-                    className='h-9 w-9 flex items-center justify-center rounded-md hover:bg-muted'
-                    onClick={toggleInfo}
-                >
-                    <MoreVertical className='h-4 w-4' />
-                </button>
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <button
+                            className='h-9 w-9 flex items-center justify-center rounded-md hover:bg-muted'
+                            onClick={toggleInfo}
+                        >
+                            <MoreVertical className='h-4 w-4' />
+                        </button>
+                    </TooltipTrigger>
+                    <TooltipContent>Info</TooltipContent>
+                </Tooltip>
             </div>
         </div>
     );
