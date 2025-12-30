@@ -14,7 +14,7 @@ const ChatMessages = () => {
         bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [list.length]);
     return (
-        <div className='flex-1 overflow-y-auto px-4 py-3 space-y-2 bg-muted/30'>
+        <div className='flex-1 overflow-y-auto px-4 py-3 space-y-2 bg-muted/10'>
             {list.map((msg) => (
                 <div
                     key={msg.id}

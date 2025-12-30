@@ -7,15 +7,11 @@ import {
 } from '../ui/input-group';
 
 const ChatInfoSidebar = () => {
-    const { isInfoOpen, closeInfo, activeConversation } = useChatStore();
+    const { closeInfo, activeConversation } = useChatStore();
 
     if (!activeConversation) return null;
     return (
-        <div
-            className={`fixed inset-y-0 right-0 z-40 w-80 bg-background border-l
-      transform transition-transform duration-300
-      ${isInfoOpen ? 'translate-x-0' : 'translate-x-full'}`}
-        >
+        <div className={`h-full w-full flex flex-col`}>
             {/* Header */}
             <div className='h-14 flex items-center justify-between px-4 border-b'>
                 <p className='font-medium'>Thông tin</p>
@@ -28,7 +24,7 @@ const ChatInfoSidebar = () => {
             </div>
 
             {/* Content */}
-            <div className='p-4 flex flex-col gap-4'>
+            <div className='p-4 flex flex-col gap-4 overflow-y-auto'>
                 <div className='flex flex-col items-center gap-2'>
                     {activeConversation.type === 'group' ? (
                         <div className='h-16 w-16 rounded-full bg-muted flex items-center justify-center'>
@@ -50,7 +46,7 @@ const ChatInfoSidebar = () => {
                 </div>
 
                 <div className='border-t pt-3 space-y-2'>
-                    <InputGroup className='mt-4 bg-gray-100 border-border py-5'>
+                    <InputGroup className='bg-gray-100 py-5'>
                         <InputGroupInput placeholder='Tìm kiếm tin nhắn' />
                         <InputGroupAddon>
                             <SearchIcon />

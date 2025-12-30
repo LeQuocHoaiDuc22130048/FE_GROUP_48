@@ -8,16 +8,67 @@ import {
     FieldLabel
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
+import { useEffect, useState } from 'react';
+import { useAuthStore } from '@/store/auth.store';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
+import { useSocketStore } from '@/store/socket.store';
 
 export function SignupForm({
     className,
     ...props
 }: React.ComponentProps<'div'>) {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+
+    const { register, loading, error, registered } = useAuthStore();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (registered) {
+            setTimeout(() => {
+                navigate('/login');
+            }, 800);
+        }
+    }, [registered]);
+
+    const onSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (!username || !password || confirmPassword !== password) {
+            toast.warning('Vui lòng điền đầy đủ thông tin đăng ký hợp lệ!');
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            toast.error('Mật khẩu và xác nhận mật khẩu không khớp!');
+            return;
+        }
+
+        register(username, password);
+    };
+
+    const connected = useSocketStore((state) => state.connected);
+
+    if (!connected) {
+        toast.error('Không thể kết nối đến máy chủ. Vui lòng thử lại sau.');
+        return;
+    }
+
     return (
         <div className={cn('flex flex-col gap-6', className)} {...props}>
             <Card className='overflow-hidden p-0 border-border'>
                 <CardContent className='grid p-0 md:grid-cols-2 '>
-                    <form className='p-6 md:p-8'>
+                    <form className='p-6 md:p-8' onSubmit={onSubmit}>
+                        <div className='flex flex-col items-center text-center gap-2'>
+                            <a
+                                href='/'
+                                className='mx-auto block w-fit text-center'
+                            >
+                                <img src='/logo.svg' alt='logo' width={100} />
+                            </a>
+                        </div>
                         <FieldGroup>
                             <div className='flex flex-col items-center gap-2 text-center'>
                                 <h1 className='text-2xl font-bold uppercase'>
@@ -29,53 +80,57 @@ export function SignupForm({
                                 </p>
                             </div>
                             <Field>
-                                <FieldLabel htmlFor='fullName'>
-                                    Họ và tên
+                                <FieldLabel htmlFor='username'>
+                                    Tên đăng nhập
                                 </FieldLabel>
                                 <Input
-                                    id='fullName'
+                                    id='username'
                                     type='text'
-                                    placeholder=' Họ và tên '
+                                    placeholder=' Nhập tên đăng nhập của bạn'
                                     required
+                                    value={username}
+                                    onChange={(e) =>
+                                        setUsername(e.target.value)
+                                    }
                                 />
                             </Field>
+
                             <Field>
-                                <FieldLabel htmlFor='email'>Email</FieldLabel>
+                                <FieldLabel htmlFor='password'>
+                                    Mật khẩu
+                                </FieldLabel>
                                 <Input
-                                    id='email'
-                                    type='email'
-                                    placeholder='Nhập email của bạn'
+                                    id='password'
+                                    type='password'
                                     required
+                                    placeholder='Nhập mật khẩu'
+                                    value={password}
+                                    onChange={(e) =>
+                                        setPassword(e.target.value)
+                                    }
                                 />
                             </Field>
                             <Field>
-                                <Field className='grid grid-cols-2 gap-4'>
-                                    <Field>
-                                        <FieldLabel htmlFor='password'>
-                                            Mật khẩu
-                                        </FieldLabel>
-                                        <Input
-                                            id='password'
-                                            type='password'
-                                            required
-                                            placeholder='Nhập mật khẩu'
-                                        />
-                                    </Field>
-                                    <Field>
-                                        <FieldLabel htmlFor='confirm-password'>
-                                            Xác nhận mật khẩu
-                                        </FieldLabel>
-                                        <Input
-                                            id='confirm-password'
-                                            type='password'
-                                            required
-                                            placeholder='Xác nhận mật khẩu'
-                                        />
-                                    </Field>
-                                </Field>
+                                <FieldLabel htmlFor='confirm-password'>
+                                    Xác nhận mật khẩu
+                                </FieldLabel>
+                                <Input
+                                    id='confirm-password'
+                                    type='password'
+                                    required
+                                    placeholder='Xác nhận mật khẩu'
+                                    value={confirmPassword}
+                                    onChange={(e) =>
+                                        setConfirmPassword(e.target.value)
+                                    }
+                                />
                             </Field>
                             <Field>
-                                <Button type='submit'>Tạo tài khoản</Button>
+                                <Button type='submit' disabled={loading}>
+                                    {loading
+                                        ? 'Đang tạo tài khoản...'
+                                        : 'Tạo tài khoản'}
+                                </Button>
                             </Field>
 
                             <FieldDescription className='text-center'>
@@ -85,7 +140,7 @@ export function SignupForm({
                     </form>
                     <div className='bg-muted relative hidden md:block'>
                         <img
-                            src='/src/assets/banner_login.png'
+                            src='/src/assets/images/banner_login.png'
                             alt='Image'
                             className='absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale'
                         />

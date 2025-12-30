@@ -43,7 +43,6 @@ const DialogGroupChat = () => {
                     <DialogTrigger asChild>
                         <Users />
                     </DialogTrigger>
-
                     <DialogContent className='sm:max-w-[420px]'>
                         <DialogHeader>
                             <DialogTitle>Thêm nhóm</DialogTitle>

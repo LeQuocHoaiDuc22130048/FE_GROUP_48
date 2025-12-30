@@ -1,12 +1,19 @@
 import { create } from 'zustand';
 import type { Conversation, User } from './type';
 
+type MessageType = 'text' | 'image';
+
 type Message = {
     id: string;
     conversationId: string;
     sender: 'me' | 'other';
-    text: string;
+    type: MessageType;
+
+    text?: string;
+    imageUrl?: string;
+
     time: string;
+    status: 'sending' | 'sent' | 'failed';
 };
 
 type ChatState = {
@@ -19,7 +26,10 @@ type ChatState = {
 
     /* ================= MESSAGES ================= */
     messages: Record<string, Message[]>;
-    sendMessage: (conversationId: string, text: string) => void;
+    sendMessage: (
+        conversationId: string,
+        payload: { type: 'text'; text: string } | { type: 'image'; file: File }
+    ) => void;
 
     /* ================= UI ================= */
     isInfoOpen: boolean;
@@ -54,53 +64,47 @@ export const useChatStore = create<ChatState>((set) => ({
         }),
 
     /* ================= MESSAGES ================= */
-    messages: {
-        '1': [
-            {
-                id: 'm1',
-                conversationId: '1',
-                sender: 'other',
-                text: 'How are you doing?',
-                time: '16:40'
-            },
-            {
-                id: 'm2',
-                conversationId: '1',
-                sender: 'me',
-                text: "I'm fine, thanks!",
-                time: '16:41'
-            }
-        ],
-        '2': [
-            {
-                id: 'm3',
-                conversationId: '2',
-                sender: 'other',
-                text: 'Anna: UI xong rồi nhé',
-                time: '16:45'
-            }
-        ]
-    },
+    messages: {},
 
-    sendMessage: (conversationId, text) =>
-        set((state) => ({
-            messages: {
-                ...state.messages,
-                [conversationId]: [
-                    ...(state.messages[conversationId] || []),
-                    {
-                        id: Date.now().toString(),
-                        conversationId,
-                        sender: 'me',
-                        text,
-                        time: new Date().toLocaleTimeString([], {
-                            hour: '2-digit',
-                            minute: '2-digit'
-                        })
-                    }
-                ]
+    sendMessage: (conversationId, payload) =>
+        set((state) => {
+            const baseMessage = {
+                id: crypto.randomUUID(),
+                conversationId,
+                sender: 'me' as const,
+                time: new Date().toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                }),
+                status: 'sending' as const
+            };
+
+            let newMessage: Message;
+
+            if (payload.type === 'text') {
+                newMessage = {
+                    ...baseMessage,
+                    type: 'text',
+                    text: payload.text
+                };
+            } else {
+                newMessage = {
+                    ...baseMessage,
+                    type: 'image',
+                    imageUrl: URL.createObjectURL(payload.file)
+                };
             }
-        })),
+
+            return {
+                messages: {
+                    ...state.messages,
+                    [conversationId]: [
+                        ...(state.messages[conversationId] || []),
+                        newMessage
+                    ]
+                }
+            };
+        }),
 
     /* ================= UI ================= */
     isInfoOpen: false,

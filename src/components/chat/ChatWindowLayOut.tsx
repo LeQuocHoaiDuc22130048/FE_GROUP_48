@@ -5,7 +5,7 @@ import ChatMessages from './ChatMessages';
 import ChatInfoSidebar from './ChatInfoSidebar';
 
 const ChatWindowLayOut = () => {
-    const { activeConversation } = useChatStore();
+    const { activeConversation, isInfoOpen } = useChatStore();
     if (!activeConversation) {
         return (
             <div className='flex h-full w-full items-center justify-center text-muted-foreground'>
@@ -14,13 +14,22 @@ const ChatWindowLayOut = () => {
         );
     }
     return (
-        <div className='relative flex h-full w-full bg-background'>
-            <div className='flex flex-col h-full w-full bg-background'>
+        <div className='flex h-full w-full bg-background overflow-hidden'>
+            <div
+                className={`flex flex-col h-full transition-all duration-300
+                ${isInfoOpen ? 'flex-[0.99]' : 'flex-1'}`}
+            >
                 <ChatHeader />
                 <ChatMessages />
                 <ChatInput />
             </div>
-            <ChatInfoSidebar />
+
+            <div
+                className={`transition-all duration-300 border-l
+                ${isInfoOpen ? 'w-80' : 'w-0 overflow-hidden'}`}
+            >
+                <ChatInfoSidebar />
+            </div>
         </div>
     );
 };
