@@ -25,6 +25,14 @@ export function LoginForm({
             <Card className='overflow-hidden p-0 border-border'>
                 <CardContent className='grid p-0 md:grid-cols-2'>
                     <form className='p-6 md:p-8'>
+                        <div className='flex flex-col items-center text-center gap-2'>
+                            <a
+                                href='/'
+                                className='mx-auto block w-fit text-center'
+                            >
+                                <img src='/logo.svg' alt='logo' width={100} />
+                            </a>
+                        </div>
                         <FieldGroup>
                             <div className='flex flex-col items-center gap-2 text-center'>
                                 <h1 className='text-2xl font-bold'>
@@ -83,7 +91,7 @@ export function LoginForm({
                     </form>
                     <div className='bg-muted relative hidden md:block'>
                         <img
-                            src='/src/assets/banner_login.png'
+                            src='/src/assets/images/banner_login.png'
                             alt='Image'
                             className='absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale'
                         />
