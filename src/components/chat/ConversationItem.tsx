@@ -14,7 +14,7 @@ const ConversationItem = ({
     return (
         <div
             className={cn(
-                'flex items-center gap-3 px-3 py-2 cursor-pointer rounded-md',
+                'flex items-center gap-3 px-3 py-2 cursor-pointer ',
                 'hover:bg-muted',
                 active && 'bg-muted'
             )}

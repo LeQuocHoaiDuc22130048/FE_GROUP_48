@@ -1,5 +1,13 @@
 import { useChatStore } from '@/types/store';
-import { File, SearchIcon, UserLock, Users, X } from 'lucide-react';
+import {
+    File,
+    LogOut,
+    SearchIcon,
+    Trash,
+    UserLock,
+    Users,
+    X
+} from 'lucide-react';
 import {
     InputGroup,
     InputGroupAddon,
@@ -24,8 +32,8 @@ const ChatInfoSidebar = () => {
             </div>
 
             {/* Content */}
-            <div className='p-4 flex flex-col gap-4 overflow-y-auto'>
-                <div className='flex flex-col items-center gap-2'>
+            <div className=' flex flex-col  overflow-y-auto'>
+                <div className='flex flex-col items-center gap-2 p-4'>
                     {activeConversation.type === 'group' ? (
                         <div className='h-16 w-16 rounded-full bg-muted flex items-center justify-center'>
                             <Users className='h-6 w-6' />
@@ -45,24 +53,32 @@ const ChatInfoSidebar = () => {
                     </p>
                 </div>
 
-                <div className='border-t pt-3 space-y-2'>
-                    <InputGroup className='bg-gray-100 py-5'>
+                <div className='flex flex-col'>
+                    <InputGroup className='bg-gray-100 py-5 rounded-none'>
                         <InputGroupInput placeholder='Tìm kiếm tin nhắn' />
                         <InputGroupAddon>
                             <SearchIcon />
                         </InputGroupAddon>
                         <InputGroupAddon align='inline-end'></InputGroupAddon>
                     </InputGroup>
-                    <button className='w-full text-left text-sm hover:text-primary flex items-center'>
+                    <button className='w-full text-left text-sm hover:bg-muted flex items-center p-3'>
                         <UserLock />{' '}
                         <span className='ml-2'>Chặn người dùng</span>
                     </button>
-                    <button className='w-full text-left text-sm hover:text-primary flex items-center'>
+                    <button className='w-full text-left text-sm hover:bg-muted flex items-center p-3'>
                         <File /> <span className='ml-2'>Media & file</span>
                     </button>
-                    <button className='w-full text-left text-sm text-red-500'>
-                        🚫 Xóa cuộc trò chuyện
+                    <button className='w-full text-left text-sm hover:bg-muted text-red-500 flex items-center p-3'>
+                        <Trash />{' '}
+                        <span className='ml-2'>Xóa cuộc trò chuyện</span>
                     </button>
+
+                    {activeConversation.type === 'group' && (
+                        <button className=' w-full text-left text-sm hover:bg-muted text-red-500 flex items-center p-3'>
+                            <LogOut />{' '}
+                            <span className='ml-2'>Rời khỏi nhóm</span>
+                        </button>
+                    )}
                 </div>
             </div>
         </div>
