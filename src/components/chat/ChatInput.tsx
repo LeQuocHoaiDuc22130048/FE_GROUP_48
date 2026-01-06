@@ -73,7 +73,7 @@ const ChatInput = () => {
                     value={text}
                     onChange={(e) => setText(e.target.value)}
                     placeholder='Nhập tin nhắn...'
-                    className='w-full bg-transparent border-none outline-none text-[15px] '
+                    className='w-full border-none outline-none text-[15px] bg-transparent focus:ring-0'
                     onKeyDown={handleKeyDown}
                 />
 
@@ -85,7 +85,7 @@ const ChatInput = () => {
                 </button>
 
                 {openEmoji && (
-                    <div className='absolute bottom-16 right-3 z-50'>
+                    <div className='absolute bottom-9 right-6 z-50'>
                         <EmojiPicker
                             onEmojiClick={(emojiData) =>
                                 setText((prev) => prev + emojiData.emoji)
