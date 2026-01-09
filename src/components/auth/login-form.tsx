@@ -17,7 +17,7 @@ export function LoginForm({
     ...props
 }: React.ComponentProps<'div'>) {
     const navigate = useNavigate();
-    const onSubmit = (e: React.FormEvent) => {
+    const onSubmit = () => {
         navigate('/chat');
     };
     return (
