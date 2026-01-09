@@ -29,7 +29,8 @@ const ChatMessages = () => {
                             msg.sender === 'me'
                                 ? 'bg-primary text-primary-foreground rounded-br-none'
                                 : 'bg-background border rounded-bl-none',
-                            msg.type === 'sticker' && 'bg-transparent p-0 border-none'
+                            msg.type === 'sticker' && 'bg-transparent p-0 border-none',
+                            msg.type === 'gif' && 'bg-transparent p-0 border-none'
                         )}
                     >
                         {msg.type === 'text' && msg.text}
@@ -45,6 +46,13 @@ const ChatMessages = () => {
                                 src={msg.stickerUrl}
                                 alt='Sticker'
                                 className='w-32 h-32 object-contain'
+                            />
+                        )}
+                        {msg.type === 'gif' && msg.gifUrl && (
+                            <img
+                                src={msg.gifUrl}
+                                alt='GIF'
+                                className='w-48 h-auto rounded-lg'
                             />
                         )}
                     </div>

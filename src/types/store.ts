@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import type { Conversation, User } from './type';
 
-type MessageType = 'text' | 'image' | 'sticker';
+type MessageType = 'text' | 'image' | 'sticker' | 'gif';
 
 type Message = {
     id: string;
@@ -12,6 +12,7 @@ type Message = {
     text?: string;
     imageUrl?: string;
     stickerUrl?: string;
+    gifUrl?: string;
 
     time: string;
     status: 'sending' | 'sent' | 'failed';
@@ -33,6 +34,7 @@ type ChatState = {
             | { type: 'text'; text: string }
             | { type: 'image'; file: File }
             | { type: 'sticker'; url: string }
+            | { type: 'gif'; url: string }
     ) => void;
 
     /* ================= UI ================= */
@@ -97,11 +99,17 @@ export const useChatStore = create<ChatState>((set) => ({
                     type: 'image',
                     imageUrl: URL.createObjectURL(payload.file)
                 };
-            } else {
+            } else if (payload.type === 'sticker') {
                 newMessage = {
                     ...baseMessage,
                     type: 'sticker',
                     stickerUrl: payload.url
+                };
+            } else {
+                newMessage = {
+                    ...baseMessage,
+                    type: 'gif',
+                    gifUrl: payload.url
                 };
             }
 
