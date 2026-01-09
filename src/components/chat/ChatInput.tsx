@@ -2,11 +2,13 @@ import { useChatStore } from '@/types/store';
 import { Image, Smile, Sticker } from 'lucide-react';
 import { useRef, useState } from 'react';
 import EmojiPicker from 'emoji-picker-react';
+import StickerPicker from './StickerPicker';
 
 const ChatInput = () => {
     const { activeConversation, sendMessage } = useChatStore();
     const [text, setText] = useState('');
     const [openEmoji, setOpenEmoji] = useState(false);
+    const [openSticker, setOpenSticker] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     if (!activeConversation) return null;
@@ -56,8 +58,24 @@ const ChatInput = () => {
                     <Image />
                 </button>
 
-                <button className='h-9 w-9 flex items-center justify-center rounded-md hover:bg-muted'>
+                <button
+                    className='h-9 w-9 flex items-center justify-center rounded-md hover:bg-muted relative'
+                    onClick={() => setOpenSticker(!openSticker)}
+                >
                     <Sticker />
+                    {openSticker && (
+                        <div className='absolute bottom-12 left-0 z-50'>
+                            <StickerPicker
+                                onSelect={(url) => {
+                                    sendMessage(activeConversation.id, {
+                                        type: 'sticker',
+                                        url
+                                    });
+                                    setOpenSticker(false);
+                                }}
+                            />
+                        </div>
+                    )}
                 </button>
 
                 <button className='h-9 w-9 flex items-center justify-center rounded-md hover:bg-muted'>

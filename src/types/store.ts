@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import type { Conversation, User } from './type';
 
-type MessageType = 'text' | 'image';
+type MessageType = 'text' | 'image' | 'sticker';
 
 type Message = {
     id: string;
@@ -11,6 +11,7 @@ type Message = {
 
     text?: string;
     imageUrl?: string;
+    stickerUrl?: string;
 
     time: string;
     status: 'sending' | 'sent' | 'failed';
@@ -28,7 +29,10 @@ type ChatState = {
     messages: Record<string, Message[]>;
     sendMessage: (
         conversationId: string,
-        payload: { type: 'text'; text: string } | { type: 'image'; file: File }
+        payload:
+            | { type: 'text'; text: string }
+            | { type: 'image'; file: File }
+            | { type: 'sticker'; url: string }
     ) => void;
 
     /* ================= UI ================= */
@@ -87,11 +91,17 @@ export const useChatStore = create<ChatState>((set) => ({
                     type: 'text',
                     text: payload.text
                 };
-            } else {
+            } else if (payload.type === 'image') {
                 newMessage = {
                     ...baseMessage,
                     type: 'image',
                     imageUrl: URL.createObjectURL(payload.file)
+                };
+            } else {
+                newMessage = {
+                    ...baseMessage,
+                    type: 'sticker',
+                    stickerUrl: payload.url
                 };
             }
 
