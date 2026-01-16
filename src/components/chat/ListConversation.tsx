@@ -1,9 +1,8 @@
-import { conversations } from '@/types/type';
 import ConversationItem from './ConversationItem';
 import { useChatStore } from '@/types/store';
 
 const ListConversation = () => {
-    const { activeConversation, setActiveConversation } = useChatStore();
+    const { conversations,activeConversation, setActiveConversation } = useChatStore();
 
     return (
         <div className='flex flex-col gap-1'>
