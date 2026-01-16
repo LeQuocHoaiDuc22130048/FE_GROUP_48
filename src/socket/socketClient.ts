@@ -5,7 +5,7 @@ class SocketClient {
     private url: string;
     private messageHandlers: SocketEventHandler[] = [];
     private errorHandlers: SocketEventHandler[] = [];
-    private isConnected: boolean = false;
+    public isConnected: boolean = false;
 
     constructor(url: string) {
         this.url = url;
@@ -28,6 +28,7 @@ class SocketClient {
         this.socket.onmessage = (event) => {
             try {
                 const data = JSON.parse(event.data);
+                // console.log("Raw Socket Message:", data); // Optional: log all raw messages for debugging
                 this.messageHandlers.forEach(handler => handler(data));
             } catch (error) {
                 console.error("Error parsing message:", error);
@@ -48,7 +49,7 @@ class SocketClient {
 
     send(eventName: string, data: any) {
         if (!this.socket || this.socket.readyState !== WebSocket.OPEN) {
-            console.error("Socket not connected");
+            console.warn("Socket not connected. Message not sent:", eventName);
             return;
         }
 
@@ -60,7 +61,7 @@ class SocketClient {
             }
         };
 
-        console.log("Sending:", payload);
+        console.log("Sending:", JSON.stringify(payload, null, 2));
         this.socket.send(JSON.stringify(payload));
     }
 
@@ -72,7 +73,6 @@ class SocketClient {
         this.errorHandlers.push(callback);
     }
 
-    // Helper to remove listeners if needed, though not strictly required by prompt
     offMessage(callback: SocketEventHandler) {
         this.messageHandlers = this.messageHandlers.filter(h => h !== callback);
     }
@@ -81,15 +81,7 @@ class SocketClient {
 // Singleton instance
 const socketClient = new SocketClient(import.meta.env.VITE_SOCKET_URL);
 
-// Auto connect when imported? 
-// The prompt says "Socket client phải có: connect()", implying manual call or auto. 
-// Let's export the instance and let the app call connect, or call it here.
-// Usually better to call it at app start. For now, I'll export the instance.
-// But to ensure it's available for login/register immediately, I'll call connect() here 
-// or ensure the functions check connection.
-// The prompt requirements are simple.
-
-// Initialize connection immediately as it's a singleton for the app
+// Initialize connection immediately
 socketClient.connect();
 
 export const register = (user: string, pass: string) => {
@@ -100,5 +92,4 @@ export const login = (user: string, pass: string) => {
     socketClient.send("LOGIN", { user, pass });
 };
 
-// Export the client instance if needed for other things later
 export default socketClient;

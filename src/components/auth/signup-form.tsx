@@ -41,9 +41,18 @@ export function SignupForm({
     };
 
     useEffect(() => {
-        socketClient.onMessage((data) => {
+        const handleMessage = (data: any) => {
             console.log("Socket Message (Register):", data);
-        });
+            if (data.event === "REGISTER") {
+                setLoading(false);
+            }
+        };
+
+        socketClient.onMessage(handleMessage);
+
+        return () => {
+            socketClient.offMessage(handleMessage);
+        };
     }, []);
 
     return (

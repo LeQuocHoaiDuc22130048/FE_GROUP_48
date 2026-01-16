@@ -21,18 +21,20 @@ export function LoginForm({
     // const navigate = useNavigate();
 
     useEffect(() => {
-        socketClient.onMessage((data) => {
-            console.log("Socket Message:", data);
-            if (data.event === "LOGIN_SUCCESS") { // Assuming success event, but prompt just says log response
-                // navigate('/chat'); // Prompt says "Log response from server to console", doesn't explicitly say navigate on success via socket, but existing code had navigate.
-                // Existing code:
-                // const onSubmit = () => {
-                //    navigate('/chat');
-                // };
-                // I will keep the navigate in onSubmit for now as per "KHÔNG sửa UI layout", but the prompt says "Log response".
-                // Actually, "Trong login-form.tsx: Gọi hàm login(username, password), Log response từ server ra console"
+        const handleMessage = (data: any) => {
+            console.log("Socket Message (Login):", data);
+            if (data.event === "RE_LOGIN" && data.status === "success") {
+                const reLoginCode = data.data?.RE_LOGIN_CODE;
+                console.log("RE_LOGIN_CODE:", reLoginCode);
+                // navigate('/chat'); // Uncomment if navigation is desired on success
             }
-        });
+        };
+
+        socketClient.onMessage(handleMessage);
+
+        return () => {
+            socketClient.offMessage(handleMessage);
+        };
     }, []);
 
     const onSubmit = (e: React.FormEvent) => {
@@ -42,13 +44,8 @@ export function LoginForm({
 
         console.log("Logging in with:", email, password);
         login(email, password);
-
-        // navigate('/chat'); // Removed immediate navigation to wait for socket response or just to follow "Log response" instruction. 
-        // But user might expect navigation. The prompt says "KHÔNG sửa UI layout", "Chỉ thêm logic xử lý".
-        // The existing code had `onClick={onSubmit}` on the button and `onSubmit` called navigate.
-        // I should change the button to type="submit" (it is already) and handle form onSubmit properly to get values.
-        // The existing code didn't capture values. I need to capture them.
     };
+
     return (
         <div className={cn('flex flex-col gap-6', className)} {...props}>
             <Card className='overflow-hidden p-0 border-border'>
