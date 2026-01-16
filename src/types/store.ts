@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import type { Conversation, User } from './type';
+import { conversations, currentUser } from './type';
 
 type MessageType = 'text' | 'image' | 'sticker' | 'gif';
 
@@ -19,10 +20,18 @@ type Message = {
 };
 
 type ChatState = {
-    /* ================= AUTH / USER ================= */
-    currentUser: User | null;
+    socket: WebSocket | null;
+    setSocket: (s: WebSocket | null) => void;
+    currentUser: User;
 
-    /* ================= CONVERSATION ================= */
+    users: User[];
+
+    setUsers: (users: User[]) => void;
+
+    conversations: Conversation[];
+    setConversations: (conversations: Conversation[]) => void;
+    updateConversation: (id: string, data: Partial<Conversation>) => void;
+
     activeConversation: Conversation | null;
     setActiveConversation: (c: Conversation) => void;
 
@@ -50,17 +59,22 @@ type ChatState = {
 };
 
 export const useChatStore = create<ChatState>((set) => ({
-    /* ================= USER ================= */
-    currentUser: {
-        id: 'u1',
-        username: 'Nguyễn Văn A',
-        email: 'nguyenvana@gmail.com',
-        avatar: 'https://i.pravatar.cc/150',
-        status: 'online',
-        createdAt: '2024-01-10T08:30:00Z'
-    },
+    socket: null,
+    setSocket: (socket) => set({ socket }),
+    currentUser,
+    users: [],
+    setUsers: (users) => set({ users }),
 
-    /* ================= CONVERSATION ================= */
+    conversations,
+    setConversations: (conversations) => set({ conversations }),
+
+    updateConversation: (id, data) =>
+        set((state) => ({
+            conversations: state.conversations.map((c) =>
+                c.id === id ? { ...c, ...data } : c
+            )
+        })),
+
     activeConversation: null,
 
     setActiveConversation: (c) =>
@@ -69,7 +83,6 @@ export const useChatStore = create<ChatState>((set) => ({
             isInfoOpen: false
         }),
 
-    /* ================= MESSAGES ================= */
     messages: {},
 
     sendMessage: (conversationId, payload) =>
@@ -124,7 +137,6 @@ export const useChatStore = create<ChatState>((set) => ({
             };
         }),
 
-    /* ================= UI ================= */
     isInfoOpen: false,
     isUserInfoOpen: false,
 

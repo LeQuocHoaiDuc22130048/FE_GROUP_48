@@ -4,6 +4,8 @@ import { useRef, useState } from 'react';
 import EmojiPicker from 'emoji-picker-react';
 import StickerPicker from './StickerPicker';
 import GifPicker from './GifPicker';
+import {Grid} from '@giphy/react-components';
+import { GiphyFetch } from '@giphy/js-fetch-api'
 
 const ChatInput = () => {
     const { activeConversation, sendMessage } = useChatStore();
