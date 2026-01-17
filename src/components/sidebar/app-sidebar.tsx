@@ -42,6 +42,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import DialogGroupChat from '../chat/DialogGroupChat';
+import DialogJoinRoom from '../chat/DialogJoinRoom';
 import { currentUser } from '@/types/type';
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -132,6 +133,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                                     </Dialog>
 
                                     <DialogGroupChat />
+                                    <DialogJoinRoom />
                                 </div>
                             </div>
                         </SidebarGroup>

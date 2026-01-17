@@ -1,6 +1,7 @@
 import { cn } from '@/lib/utils';
 import { useChatStore } from '@/types/store';
 import { useEffect, useRef } from 'react';
+import { getRoomChatMes } from '@/socket/socketClient';
 
 const ChatMessages = () => {
     const { activeConversation, messages } = useChatStore();
@@ -13,6 +14,12 @@ const ChatMessages = () => {
     useEffect(() => {
         bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [list.length]);
+
+    useEffect(() => {
+        if (activeConversation) {
+            getRoomChatMes(activeConversation.name);
+        }
+    }, [activeConversation]);
     return (
         <div className='flex-1 overflow-y-auto px-4 py-3 space-y-2 bg-muted/10'>
             {list.map((msg) => (

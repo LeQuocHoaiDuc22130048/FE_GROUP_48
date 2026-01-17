@@ -37,6 +37,7 @@ type ChatState = {
 
     /* ================= MESSAGES ================= */
     messages: Record<string, Message[]>;
+    setMessages: (conversationId: string, messages: Message[]) => void;
     sendMessage: (
         conversationId: string,
         payload:
@@ -84,6 +85,13 @@ export const useChatStore = create<ChatState>((set) => ({
         }),
 
     messages: {},
+    setMessages: (conversationId, messages) =>
+        set((state) => ({
+            messages: {
+                ...state.messages,
+                [conversationId]: messages
+            }
+        })),
 
     sendMessage: (conversationId, payload) =>
         set((state) => {

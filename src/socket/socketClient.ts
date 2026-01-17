@@ -117,4 +117,20 @@ export const logout = () => {
     socketClient.send("LOGOUT", {});
 };
 
+export const createRoom = (name: string) => {
+    socketClient.send("CREATE_ROOM", { name });
+};
+
+export const joinRoom = (name: string) => {
+    socketClient.send("JOIN_ROOM", { name });
+};
+
+export const getRoomChatMes = (name: string, page: number = 1) => {
+    socketClient.send("GET_ROOM_CHAT_MES", { name, page });
+};
+
+export const getUserList = () => {
+    socketClient.send("GET_USER_LIST", {});
+};
+
 export default socketClient;

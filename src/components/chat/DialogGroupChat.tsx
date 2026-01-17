@@ -3,7 +3,8 @@ import {
     DialogTrigger,
     DialogContent,
     DialogHeader,
-    DialogTitle
+    DialogTitle,
+    DialogDescription
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -11,6 +12,7 @@ import { Button } from '@/components/ui/button';
 import { Users } from 'lucide-react';
 import { useState } from 'react';
 import { conversations } from '@/types/type';
+import { createRoom } from '@/socket/socketClient';
 
 const DialogGroupChat = () => {
     const [groupName, setGroupName] = useState('');
@@ -24,16 +26,12 @@ const DialogGroupChat = () => {
         );
     };
     const handleCreateGroup = () => {
-        const newGroup = {
-            id: Date.now().toString(),
-            type: 'group' as const,
-            name: groupName,
-            groupAvatar: 'https://picsum.photos/seed/group/200/300',
-            lastMessage: 'Nhóm vừa được tạo',
-            time: 'now',
-            members
-        };
-        console.log('GROUP CREATED:', newGroup);
+        if (!groupName) return;
+        createRoom(groupName);
+        console.log('Request create room:', groupName);
+        // Reset and close logic could be added here or handled via props/state
+        setGroupName('');
+        setMembers([]);
     };
 
     return (
@@ -46,6 +44,9 @@ const DialogGroupChat = () => {
                     <DialogContent className='sm:max-w-[420px]'>
                         <DialogHeader>
                             <DialogTitle>Thêm nhóm</DialogTitle>
+                            <DialogDescription>
+                                Tạo nhóm mới để trò chuyện cùng bạn bè.
+                            </DialogDescription>
                         </DialogHeader>
 
                         {/* Tên nhóm */}
