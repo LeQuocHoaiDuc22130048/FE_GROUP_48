@@ -10,5 +10,15 @@ export default defineConfig({
         alias: {
             '@': path.resolve(__dirname, './src')
         }
+    },
+    server: {
+        proxy: {
+            '/ws': {
+                target: 'wss://chat.longapp.site/chat/chat',
+                changeOrigin: true,
+                ws: true,
+                rewrite: (path) => path.replace(/^\/ws/, '')
+            }
+        }
     }
 });

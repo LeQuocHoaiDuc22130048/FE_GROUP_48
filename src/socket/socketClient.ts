@@ -23,6 +23,15 @@ class SocketClient {
         this.socket.onopen = () => {
             console.log("WebSocket Connected");
             this.isConnected = true;
+
+            // Auto Re-Login
+            const savedUser = localStorage.getItem('savedUser');
+            const reLoginCode = localStorage.getItem('reLoginCode');
+
+            if (savedUser && reLoginCode) {
+                console.log("Attempting Re-Login...");
+                this.send("RE_LOGIN", { user: savedUser, code: reLoginCode });
+            }
         };
 
         this.socket.onmessage = (event) => {
@@ -65,6 +74,14 @@ class SocketClient {
         this.socket.send(JSON.stringify(payload));
     }
 
+    reLogin(user: string, code: string) {
+        this.send("RE_LOGIN", { user, code });
+    }
+
+    logout() {
+        this.send("LOGOUT", {});
+    }
+
     onMessage(callback: SocketEventHandler) {
         this.messageHandlers.push(callback);
     }
@@ -90,6 +107,14 @@ export const register = (user: string, pass: string) => {
 
 export const login = (user: string, pass: string) => {
     socketClient.send("LOGIN", { user, pass });
+};
+
+export const reLogin = (user: string, code: string) => {
+    socketClient.send("RE_LOGIN", { user, code });
+};
+
+export const logout = () => {
+    socketClient.send("LOGOUT", {});
 };
 
 export default socketClient;

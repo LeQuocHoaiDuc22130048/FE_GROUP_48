@@ -10,23 +10,50 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@radix-ui/react-label';
 import { Checkbox } from '../ui/checkbox';
-// import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 import socketClient, { login } from '@/socket/socketClient';
 import { useEffect } from 'react';
+import { toast } from 'sonner';
 
 export function LoginForm({
     className,
     ...props
 }: React.ComponentProps<'div'>) {
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const handleMessage = (data: any) => {
             console.log("Socket Message (Login):", data);
-            if (data.event === "RE_LOGIN" && data.status === "success") {
+
+            // Handle Login Error
+            if (data.event === "LOGIN" && data.status === "error") {
+                toast.error(data.mes || "Đăng nhập thất bại");
+            }
+
+            // Handle Login Success
+            if ((data.event === "RE_LOGIN" || data.event === "LOGIN") && data.status === "success") {
                 const reLoginCode = data.data?.RE_LOGIN_CODE;
                 console.log("RE_LOGIN_CODE:", reLoginCode);
-                // navigate('/chat'); // Uncomment if navigation is desired on success
+
+                // Save credentials for Re-Login
+                if (reLoginCode) {
+                    localStorage.setItem('reLoginCode', reLoginCode);
+                }
+
+                // Save username if available, or we rely on the user input from the form which is tricky here.
+                // Best effort: if data.data.user exists, use it.
+                if (data.data?.user) {
+                    localStorage.setItem('savedUser', data.data.user);
+                } else {
+                    // Fallback: try to get it from the input field if it's still there
+                    const usernameInput = (document.getElementById('username') as HTMLInputElement)?.value;
+                    if (usernameInput) {
+                        localStorage.setItem('savedUser', usernameInput.trim());
+                    }
+                }
+
+                toast.success("Đăng nhập thành công!");
+                navigate('/chat');
             }
         };
 
@@ -35,15 +62,23 @@ export function LoginForm({
         return () => {
             socketClient.offMessage(handleMessage);
         };
-    }, []);
+    }, [navigate]);
 
     const onSubmit = (e: React.FormEvent) => {
         e.preventDefault(); // Prevent default form submission
-        const email = (document.getElementById('email') as HTMLInputElement).value;
-        const password = (document.getElementById('password') as HTMLInputElement).value;
+        const usernameInput = (document.getElementById('username') as HTMLInputElement).value;
+        const passwordInput = (document.getElementById('password') as HTMLInputElement).value;
 
-        console.log("Logging in with:", email, password);
-        login(email, password);
+        const username = usernameInput.trim();
+        const password = passwordInput.trim();
+
+        if (!username || !password) {
+            toast.warning("Vui lòng nhập đầy đủ thông tin");
+            return;
+        }
+
+        console.log("Logging in with:", username, password);
+        login(username, password);
     };
 
     return (
@@ -69,11 +104,11 @@ export function LoginForm({
                                 </p>
                             </div>
                             <Field>
-                                <FieldLabel htmlFor='email'>Email</FieldLabel>
+                                <FieldLabel htmlFor='username'>Tên đăng nhập</FieldLabel>
                                 <Input
-                                    id='email'
+                                    id='username'
                                     type='text'
-                                    placeholder='Nhập email của bạn'
+                                    placeholder='Nhập tên đăng nhập của bạn'
                                     required
                                 />
                             </Field>

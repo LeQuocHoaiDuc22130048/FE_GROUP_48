@@ -25,19 +25,23 @@ export function SignupForm({
     const onSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!username || !password || confirmPassword !== password) {
+        const trimmedUsername = username.trim();
+        const trimmedPassword = password.trim();
+        const trimmedConfirm = confirmPassword.trim();
+
+        if (!trimmedUsername || !trimmedPassword || trimmedConfirm !== trimmedPassword) {
             toast.warning('Vui lòng điền đầy đủ thông tin đăng ký hợp lệ!');
             return;
         }
 
-        if (password !== confirmPassword) {
+        if (trimmedPassword !== trimmedConfirm) {
             toast.error('Mật khẩu và xác nhận mật khẩu không khớp!');
             return;
         }
 
-        console.log("Registering with:", username, password);
+        console.log("Registering with:", trimmedUsername, trimmedPassword);
         setLoading(true);
-        register(username, password);
+        register(trimmedUsername, trimmedPassword);
     };
 
     useEffect(() => {
@@ -45,6 +49,12 @@ export function SignupForm({
             console.log("Socket Message (Register):", data);
             if (data.event === "REGISTER") {
                 setLoading(false);
+                if (data.status === 'success') {
+                    toast.success("Đăng ký thành công! Vui lòng đăng nhập.");
+                    // Optional: Redirect to login or clear form
+                } else if (data.status === 'error') {
+                    toast.error(data.mes || "Đăng ký thất bại");
+                }
             }
         };
 

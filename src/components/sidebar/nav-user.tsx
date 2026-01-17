@@ -19,6 +19,7 @@ import {
 import Logout from '../auth/logout';
 import { useChatStore } from '@/types/store';
 import type { User } from '@/types/type';
+import socketClient from '@/socket/socketClient';
 import { useNavigate } from 'react-router';
 
 export function NavUser({ user }: { user: User }) {
@@ -27,6 +28,13 @@ export function NavUser({ user }: { user: User }) {
     const { openUserInfo } = useChatStore();
 
     const handleLogout = () => {
+        // Call logout on socket
+        socketClient.logout();
+
+        // Clear local storage
+        localStorage.removeItem('savedUser');
+        localStorage.removeItem('reLoginCode');
+
         navigate('/login');
     };
     return (

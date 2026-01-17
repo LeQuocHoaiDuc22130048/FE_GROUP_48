@@ -16,7 +16,13 @@ const AppChat = () => {
         socket.onmessage = handleChatSocketMessage;
         setSocket(socket);
         return () => {
-            socket.close();
+            if (socket.readyState === WebSocket.OPEN) {
+                socket.close();
+            } else if (socket.readyState === WebSocket.CONNECTING) {
+                socket.onopen = () => {
+                    socket.close();
+                };
+            }
             setSocket(null);
         }
     }, []);
